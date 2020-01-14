@@ -1,0 +1,24 @@
+version: "3.0"
+
+services:
+  manager:
+    image: database_manager:latest
+    container_name: manager
+    environment:
+      WEATHERSTATION_PASSPHRASE: makerspace
+      DATABASE_HOST: database
+      DATABASE_NAME: WeatherStation
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: postgres
+      DATABASE_PORT: 5432
+      DELETION_FREQUENCY_HOURS: 1
+      TIME_WINDOW_DAYS: 0
+      TIME_WINDOW_HOURS: 0
+      TIME_WINDOW_MINUTES: 0
+      TIME_WINDOW_SECONDS: 20
+    restart: always
+
+networks:
+  default:
+    external:
+      name: backend_weather_station

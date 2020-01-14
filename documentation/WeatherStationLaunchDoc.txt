@@ -1,0 +1,30 @@
+
+Create mounted folders
+=========================================================
+Postgres:
+cd /var/storage
+mkdir postgres
+chmod uga+rwx postgres
+
+Grafana
+cd /var/storage
+mkdir grafana
+chmod uga+rwx grafana
+
+
+Build Docker images
+=========================================================
+API:
+cd WeatherStation/api
+chmod +x build.sh
+./build.sh
+
+Database-Checker:
+cd WeatherStation/database_checker
+chmod +x build.sh
+./build.sh
+
+
+Run with
+=========================================================
+docker-compose up -d

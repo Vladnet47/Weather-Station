@@ -1,0 +1,69 @@
+version: "3.0"
+
+services:
+  database:
+    image: postgres:latest
+    container_name: database
+    ports:
+      - "5432:5432"
+    volumes:
+      - /var/storage/postgres:/var/lib/postgresql/data
+    restart: always
+    networks:
+      - weather_station
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - /var/storage/grafana:/var/lib/grafana
+    restart: always
+    depends_on:
+      - database
+    networks:
+      - weather_station
+
+  api:
+    image: weatherstation_api:latest
+    container_name: api
+    environment:
+      WEATHERSTATION_PASSPHRASE: makerspace
+      DATABASE_HOST: database
+      DATABASE_NAME: WeatherStation
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: postgres
+      DATABASE_PORT: 5432
+    ports:
+      - "8080:80"
+    restart: always
+    depends_on:
+      - database
+    networks:
+      - weather_station
+
+  manager:
+    image: database_manager:latest
+    container_name: manager
+    environment:
+      WEATHERSTATION_PASSPHRASE: makerspace
+      DATABASE_HOST: database
+      DATABASE_NAME: WeatherStation
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: postgres
+      DATABASE_PORT: 5432
+      DELETION_FREQUENCY_HOURS: 1
+      TIME_WINDOW_DAYS: 0
+      TIME_WINDOW_HOURS: 0
+      TIME_WINDOW_MINUTES: 0
+      TIME_WINDOW_SECONDS: 20
+    restart: always
+    depends_on:
+      - database
+    networks:
+      - weather_station
+
+networks:
+  weather_station:
+    driver: bridge
