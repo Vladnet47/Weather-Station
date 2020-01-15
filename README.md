@@ -14,6 +14,7 @@
     - [Configuring Grafana](#Configuring-Grafana)
     - [Launching Server](#Launching-Server)
     - [Configuring Docker Containers](#Configuring-Docker-Containers)
+- [Request Formats](#Request-Formats)
 - [FAQ](#FAQ)
 - [Helpful Links](#Helpful-Links)
 
@@ -225,6 +226,10 @@ If you change the password or username on the database, make sure to update the 
 | DATABASE_USER | postgres | database username |
 | DATABASE_PASSWORD | postgres | database password |
 | DATABASE_PORT | 5432 | database container port |
+| API_ENDPOINT | /weatherstation/windrain | API endpoint for sending data to |
+| PARAM_WIND_DIRECTION | winddir | parameter name for wind direction in POST request |
+| PARAM_WIND_SPEED | windspeed | parameter name for wind speed in POST request |
+| PARAM_RAINFALL | rainfall | parameter name for rainfall in POST request |
 
 <br/>
 
@@ -243,6 +248,20 @@ If you change the password or username on the database, make sure to update the 
 | TIME_WINDOW_HOURS | 0 | same as TIME_WINDOW_DAYS but hours |
 | TIME_WINDOW_MINUTES | 0 | same as TIME_WINDOW_DAYS but minutes |
 | TIME_WINDOW_SECONDS | 0 | same as TIME_WINDOW_DAYS but seconds |
+
+<br/><br/>
+
+## Request Formats
+Once the server is running, it exposes three API endpoints.
+
+GET **server_ip:8080/ping**
+Simply returns 200, meaning server is accepting requests.
+
+GET **server_ip:8080/help**
+Returns 200 if API can successfully connect to database.
+
+POST **server_ip:8080/weatherstation/windrain**
+Used to receive data from the weather station. POST request body must be ***winddir=#&windspeed=#&rainfall=#***. Returns 200 if data was successfully stored in database and 400 if data was not formatted correctly.
 
 <br/><br/>
 
