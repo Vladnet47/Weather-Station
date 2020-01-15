@@ -205,10 +205,14 @@ Docker containers are configured through the *docker-compose.yml* files, which a
 | ---- | --------- | ------ |
 | port | 5432:5432 | maps 5432 port on server to 5432 port on database container |
 
+<br/>
+
 #### Grafana
 | Variable | Default Value | Description |
 | ---- | --------- | ------ |
 | port | 3000:3000 | maps 3000 port on server to 3000 port on grafana container |
+
+<br/>
 
 #### API
 If you change the password or username on the database, make sure to update the variables.
@@ -221,6 +225,8 @@ If you change the password or username on the database, make sure to update the 
 | DATABASE_USER | postgres | database username |
 | DATABASE_PASSWORD | postgres | database password |
 | DATABASE_PORT | 5432 | database container port |
+
+<br/>
 
 #### Database Manager
 If you change the password or username on the database, make sure to update the variables.
