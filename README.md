@@ -254,13 +254,13 @@ If you change the password or username on the database, make sure to update the 
 ## Request Formats
 Once the server is running, it exposes three API endpoints.
 
-GET **server_ip:8080/ping**
+GET **server_ip:8080/ping**\
 Simply returns 200, meaning server is accepting requests.
 
-GET **server_ip:8080/help**
+GET **server_ip:8080/help**\
 Returns 200 if API can successfully connect to database.
 
-POST **server_ip:8080/weatherstation/windrain**
+POST **server_ip:8080/weatherstation/windrain**\
 Used to receive data from the weather station. POST request body must be ***winddir=#&windspeed=#&rainfall=#***. Returns 200 if data was successfully stored in database and 400 if data was not formatted correctly.
 
 <br/><br/>
