@@ -10,7 +10,7 @@
 - [Setting up Server](#Setting-up-Server)
     - [Installing Docker](#Installing-Docker)
     - [Mounting Volumes](#Mounting-Volumes)
-    - [Configuring PostreSQL](#Configuring-PostreSQL)
+    - [Configuring PostreSQL](#Configuring-PostgreSQL)
     - [Configuring Grafana](#Configuring-Grafana)
     - [Launching Server](#Launching-Server)
     - [Configuring Docker Containers](#Configuring-Docker-Containers)
