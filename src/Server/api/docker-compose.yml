@@ -5,19 +5,23 @@ services:
     image: weatherstation_api:latest
     container_name: api
     environment:
-      WEATHERSTATION_PASSPHRASE: makerspace
       DATABASE_HOST: database
       DATABASE_NAME: WeatherStation
       DATABASE_USER: postgres
       DATABASE_PASSWORD: postgres
       DATABASE_PORT: 5432
+      API_ENDPOINT: /weatherstation/windrain
+      PARAM_WIND_DIRECTION: winddir
+      PARAM_WIND_SPEED: windspeed
+      PARAM_RAINFALL: rainfall
     ports:
       - "8080:80"
     restart: always
+    networks:
+      - weather_station
 
 networks:
-  default:
-    external:
-      name: backend_weather_station
+  weather_station:
+    external: true
 
 

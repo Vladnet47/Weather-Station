@@ -17,18 +17,12 @@ class WeatherStation(Resource):
     # Rain fall in inches since last update
     def post(self):
         # Make sure that request contains all required attributes
-        if not all(key in request.form for key in ('passphrase', 'winddir', 'windspeed', 'rainfall')):
-            return "Please specify values for 'passphrase', 'winddir', 'windspeed', and 'rainfall'.", 400 # bad request
-        
-        passphrase = request.form['passphrase']
+        if not all(key in request.form for key in ('winddir', 'windspeed', 'rainfall')):
+            return "Please specify values for winddir', 'windspeed', and 'rainfall' in POST body query string.", 400 # bad request
 
-        # Check to make sure the passphrase matches, and return error if not
-        if (passphrase != os.getenv('WEATHERSTATION_PASSPHRASE')):
-            return "Incorrect Passphrase!", 401 # unauthorized
-
-        windDirection = request.form['winddir']
-        windSpeed = request.form['windspeed']
-        rainfall = request.form['rainfall']
+        windDirection = request.form[os.getenv('PARAM_WIND_DIRECTION', 'winddir')]
+        windSpeed = request.form[os.getenv('PARAM_WIND_SPEED', 'windspeed')]
+        rainfall = request.form[os.getenv('PARAM_RAINFALL', 'rainfall')]
 
         insertIntoDatabase(windDirection, windSpeed, rainfall)
 
@@ -96,7 +90,7 @@ def connectToDatabase():
 
     return connection
 
-api.add_resource(WeatherStation, '/weatherstation/windrain')
+api.add_resource(WeatherStation, os.getenv('API_ENDPOINT', '/weatherstation/windrain'))
 api.add_resource(Ping, '/ping')
 api.add_resource(Help, '/help')
 
