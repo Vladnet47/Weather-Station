@@ -9,9 +9,11 @@
     - [Uploading Program](#Uploading-Program)
 - [Setting up Server](#Setting-up-Server)
     - [Installing Docker](#Installing-Docker)
-    - [Setting up Backend](#Setting-up-Backend)
+    - [Mounting Volumes](#Mounting-Volumes)
+    - [Configuring PostreSQL](#Configuring-PostreSQ)
+    - [Configuring Grafana](#Configuring-Grafana)
     - [Launching Server](#Launching-Server)
-    - [Configuring Server](#Configuring-Server)
+    - [Configuring Docker Containers](#Configuring-Docker-Containers)
 - [FAQ](#FAQ)
 - [Helpful Links](#Helpful-Links)
 
@@ -120,12 +122,7 @@ Common commands are listed below. For additional reading, see [Docker documentat
 
 <br/>
 
-### Setting up Backend
-Before starting the server, you must first set up [PostgreSQL](https://www.postgresql.org/) database and [Grafana](https://grafana.com/grafana/).
-
-<br/>
-
-#### Mounting Volumes
+### Mounting Volumes
 This allows the database and grafana containers to store data on the host, preventing data loss upon container removal. The actual folder locations can be configured in the respective *docker-compose.yml* files.
 ```bash
 sudo cd /var/storage
@@ -135,7 +132,7 @@ sudo chmod uga+rwx postgres grafana
 
 <br/>
     
-#### Configuring PostgreSQL
+### Configuring PostgreSQL
 Use pgAdmin, a tool specifically designed for PostgreSQL.
 1. Copy ***Weather-Station/Server*** directory to your server
 2. Navigate to ***Server/database***
@@ -159,7 +156,7 @@ docker-compose up -d
 
 <br/>
      
-#### Configuring Grafana
+### Configuring Grafana
 Now that the database has been configured, you can attach a data visualization.
 1. If not done so already, copy ***Weather-Station/Server*** directory to your server
 1. Navigate to ***Server/grafana***
@@ -170,21 +167,6 @@ docker-compose up -d
 3. Connect to grafana via port 3000 and follow [this tutorial](https://grafana.com/docs/grafana/latest/guides/getting_started/)
     *Default username: admin*
     *Default password: grafana*
-    
-<br/>
-    
-#### Stopping PostgreSQL and Grafana
-If you have not mounted any folders, refer to step 1. Otherwise, it is safe to remove the containers.
-1. Navigate to ***Server/database***
-2. Stop the database container
-```bash
-docker-compose down
-```
-3. Navigate to ***Server/grafana***
-4. Stop the grafana container
-```bash
-docker-compose down
-```
 
 <br/>
 
@@ -215,7 +197,7 @@ docker-compose up -d
 
 <br/>
 
-### Configuring Server
+### Configuring Docker Containers
 Docker containers are configured through the *docker-compose.yml* files, which allow the user to pass environment variables to the container. This section describes what environment variables are passed.
 
 #### Database
@@ -223,14 +205,10 @@ Docker containers are configured through the *docker-compose.yml* files, which a
 | ---- | --------- | ------ |
 | port | 5432:5432 | maps 5432 port on server to 5432 port on database container |
 
-<br/>
-
 #### Grafana
 | Variable | Default Value | Description |
 | ---- | --------- | ------ |
 | port | 3000:3000 | maps 3000 port on server to 3000 port on grafana container |
-
-<br/>
 
 #### API
 If you change the password or username on the database, make sure to update the variables.
@@ -243,8 +221,6 @@ If you change the password or username on the database, make sure to update the 
 | DATABASE_USER | postgres | database username |
 | DATABASE_PASSWORD | postgres | database password |
 | DATABASE_PORT | 5432 | database container port |
-
-<br/>
 
 #### Database Manager
 If you change the password or username on the database, make sure to update the variables.
@@ -275,8 +251,17 @@ Ensure that your Serial Monitor baud rate is the same as the one set under ***To
 1. Make sure database container is running
 2. Make sure IP Address and port is specified correctly
 3. Make sure database username and password is entered correctly
-4. Make sure database name is *WeatherStation*
+4. Make sure database name is ***WeatherStation***
 5. Make sure 'verify-SSL' is set to *never*
+
+#### Docker-compose 'container is already running'
+If a container was previously launched with a different `docker-compose up` command, launching the same container with the new one throws an error.
+- Navigate to directory with initial ***docker-compose.yml*** file and execute `docker-compose down`
+- **(or)** Manually stop the container
+```bash
+docker stop container_name
+docker rm container_name
+```
 
 <br/><br/>
 
