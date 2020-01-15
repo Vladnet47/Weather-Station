@@ -5,16 +5,20 @@
 - [Downloading the Repository](#Downloading-the-Repository)
 - [Setting up Weather Station](#Setting-up-Weather-Station)
     - [Prerequisites](#Prerequisites)
-    - [Assembling Equipment](#Assemblng-Equipment)
+    - [Assembling Equipment](#Assembling-Equipment)
     - [Uploading Program](#Uploading-Program)
 - [Setting up Server](#Setting-up-Server)
     - [Installing Docker](#Installing-Docker)
-    - [Setting up Backend](#Setting-up-Backend)
+    - [Mounting Volumes](#Mounting-Volumes)
+    - [Configuring PostreSQL](#Configuring-PostgreSQL)
+    - [Configuring Grafana](#Configuring-Grafana)
     - [Launching Server](#Launching-Server)
-    - [Configuring Server](#Configuring-Server)
+    - [Configuring Docker Containers](#Configuring-Docker-Containers)
+- [Request Formats](#Request-Formats)
 - [FAQ](#FAQ)
 - [Helpful Links](#Helpful-Links)
 
+<br/><br/>
 
 ## Description
 As a way to attract embedded systems enthusiasts, a couple of students and I are partnering with the UW Bothell Makerspace to install a weather station in the campus garden.
@@ -29,14 +33,17 @@ The server is comprised of four Docker containers:
 
 The following sections describe how to set up and configure the system.
 
+<br/><br/>
+
 ## Downloading the Repository
 Navigate to a directory of your choice and execute the following command:
 ```bash 
 git clone https://github.com/Vladnet47/Weather-Station.git
 ```
 
-## Setting up Weather Station
+<br/><br/>
 
+## Setting up Weather Station
 ### Prerequisites
 Ensure you have access to the following:
 - [Sparkfun ESP32 Thing](https://www.sparkfun.com/products/13907)
@@ -46,14 +53,16 @@ Ensure you have access to the following:
 - Power source
 - [Arduino IDE](https://www.arduino.cc/en/main/software)
 
+<br/>
+
 ### Assembling Equipment
-Follow these steps to set up the weather station hardware:
+Follow these steps to set up the weather station hardware. Make sure the ESP32 is encased in a weather-resistant container.
 1. [Assemble the weather meter](https://learn.sparkfun.com/tutorials/weather-meter-hookup-guide)
 2. [Assemble the weather sensor shield](https://learn.sparkfun.com/tutorials/esp32-environment-sensor-shield-hookup-guide)
 3. Attach the sensors to the respective ports on the shield
 4. Connect the ESP32/shield to a power source
 
-**IMPORTANT:** Make sure the ESP32 is encased in a weather-resistant container.
+<br/>
 
 ### Uploading Program
 Follow these steps to configure and upload code to the ESP32:
@@ -89,14 +98,15 @@ const String VARNAME_WIND_SPEED = "windspeed";
 const String VARNAME_RAINFALL = "rainfall";
 ```
 
-## Setting up Server
+<br/><br/>
 
+## Setting up Server
 ### Installing Docker
-Install the following programs for your operating system:
+Follow the installation guides below.
 1. [Docker](https://docs.docker.com/install/)
 2. [Docker-compose](https://docs.docker.com/compose/install/) (if using Raspberry PI as server, [this is a helpful link](https://dev.to/rohansawant/installing-docker-and-docker-compose-on-the-raspberry-pi-in-5-simple-steps-3mgl))
 
-Some common commands are listed below. For additional information, read the documentation for [Docker](https://docs.docker.com/) and [docker-compose](https://docs.docker.com/compose/).
+Common commands are listed below. For additional reading, see [Docker documentation](https://docs.docker.com/) and [docker-compose documentation](https://docs.docker.com/compose/).
 
 | Command | Description |
 | ------- | ----------- |
@@ -111,32 +121,32 @@ Some common commands are listed below. For additional information, read the docu
 | `docker-compose up -d` | launches containers in docker-compose.yml file (in same folder) |
 | `docker-compose up` | stops and removes containers in docker-compose.yml file (in same folder) |
 
-### Setting up Backend
-Before starting the server, you must first set up [PostgreSQL](https://www.postgresql.org/) and [Grafana](https://grafana.com/grafana/).
+<br/>
 
-#### Mounting Volumes
-This allows the database and grafana containers to store data on the host, which prevents it from getting lost if the containers are removed. Execute the following commands:
+### Mounting Volumes
+This allows the database and grafana containers to store data on the host, preventing data loss upon container removal. The actual folder locations can be configured in the respective *docker-compose.yml* files.
 ```bash
 sudo cd /var/storage
 sudo mkdir postgres grafana
 sudo chmod uga+rwx postgres grafana
 ```
-#### Coping Files to Server
-Copy ***Weather-Station/Server*** directory to your server.
+
+<br/>
     
-#### Configuring PostgreSQL
-The easiest way is to use pgAdmin, a tool specifically made for postgreSQL databases.
-1. Navigate to ***Server/database*** directory in your server
-2. Start the database container
+### Configuring PostgreSQL
+Use pgAdmin, a tool specifically designed for PostgreSQL.
+1. Copy ***Weather-Station/Server*** directory to your server
+2. Navigate to ***Server/database***
+3. Start the database container
 ```bash
 docker-compose up -d
 ```
-3. Install [pgAdmin](https://www.pgadmin.org/download/)
-4. Connect to your database via port 5432 using [this tutorial](https://www.pgadmin.org/docs/pgadmin4/development/getting_started.html)
-    Default username: postgres
-    Default password: postgres
-5. Add database called ***WeatherStation***
-6. Under ***WeatherStation***, add table called ***WindRainMeasurements*** with the following columns:
+4. Install [pgAdmin](https://www.pgadmin.org/download/)
+5. Connect to your database via port 5432 using [this tutorial](https://www.pgadmin.org/docs/pgadmin4/development/getting_started.html)
+    *Default username: postgres*
+    *Default password: postgres*
+6. Add database called ***WeatherStation***
+7. Under ***WeatherStation***, create table called ***WindRainMeasurements*** with the following columns:
     
 | Name | Data Type | Length | Precision | Constraints |
 | ---- | --------- | ------ | --------- | ----------- |
@@ -144,30 +154,22 @@ docker-compose up -d
 | wind_direction | numeric | 5 | 2 | Not Null |
 | wind_speed | numeric | 5 | 2 | Not Null |
 | rainfall | numeric | 5 | 2 | Not Null |
+
+<br/>
      
-#### Configuring Grafana
-Now that the database has been configured, it is time to attach a visualization to the data.
+### Configuring Grafana
+Now that the database has been configured, you can attach a data visualization.
+1. If not done so already, copy ***Weather-Station/Server*** directory to your server
 1. Navigate to ***Server/grafana***
-2. Start the grafana container (make sure database is still running)
+2. Start the grafana container
 ```bash
 docker-compose up -d
 ```
 3. Connect to grafana via port 3000 and follow [this tutorial](https://grafana.com/docs/grafana/latest/guides/getting_started/)
-    Default username: admin
-    Default password: grafana
-    
-#### Stoping PostgreSQL and Grafana
-After configuring the table, it is safe to stop and remove the ***postgres*** container, since the data folder is mounted on the host. If you have not mounted any folders, refer to step 1.
-1. Navigate to ***Server/database***
-2. Stop the database container
-```bash
-docker-compose down
-```
-3. Navigate to ***Server/grafana***
-4. Stop the grafana container
-```bash
-docker-compose down
-```
+    *Default username: admin*
+    *Default password: grafana*
+
+<br/>
 
 ### Launching Server
 Once PostgreSQL and Grafana are set up, the entire server is ready to be launched.
@@ -188,13 +190,15 @@ sudo chmod +x build.sh
 cd Server
 docker-compose up -d
 ```
-4. **(Option 2)** Launch each container individually, but **make sure to launch database first**
+4. **(Option 2)** Launch each container individually, but **launch database first**
 ```bash
 cd Server/container_name
 docker-compose up -d
 ```
 
-### Configuring Server
+<br/>
+
+### Configuring Docker Containers
 Docker containers are configured through the *docker-compose.yml* files, which allow the user to pass environment variables to the container. This section describes what environment variables are passed.
 
 #### Database
@@ -202,12 +206,18 @@ Docker containers are configured through the *docker-compose.yml* files, which a
 | ---- | --------- | ------ |
 | port | 5432:5432 | maps 5432 port on server to 5432 port on database container |
 
+<br/>
+
 #### Grafana
 | Variable | Default Value | Description |
 | ---- | --------- | ------ |
 | port | 3000:3000 | maps 3000 port on server to 3000 port on grafana container |
 
+<br/>
+
 #### API
+If you change the password or username on the database, make sure to update the variables.
+
 | Variable | Default Value | Description |
 | ---- | --------- | ------ |
 | port | 8080:80 | maps 8080 port on server to 80 port on api container |
@@ -216,10 +226,16 @@ Docker containers are configured through the *docker-compose.yml* files, which a
 | DATABASE_USER | postgres | database username |
 | DATABASE_PASSWORD | postgres | database password |
 | DATABASE_PORT | 5432 | database container port |
+| API_ENDPOINT | /weatherstation/windrain | API endpoint for sending data to |
+| PARAM_WIND_DIRECTION | winddir | parameter name for wind direction in POST request |
+| PARAM_WIND_SPEED | windspeed | parameter name for wind speed in POST request |
+| PARAM_RAINFALL | rainfall | parameter name for rainfall in POST request |
 
-If you change the password or username on the database, make sure to update the variables.
+<br/>
 
 #### Database Manager
+If you change the password or username on the database, make sure to update the variables.
+
 | Variable | Default Value | Description |
 | ---- | --------- | ------ |
 | DATABASE_HOST | database | database container name |
@@ -233,18 +249,46 @@ If you change the password or username on the database, make sure to update the 
 | TIME_WINDOW_MINUTES | 0 | same as TIME_WINDOW_DAYS but minutes |
 | TIME_WINDOW_SECONDS | 0 | same as TIME_WINDOW_DAYS but seconds |
 
-If you change the password or username on the database, make sure to update the variables.
+<br/><br/>
+
+## Request Formats
+Once the server is running, it exposes three API endpoints.
+
+GET **server_ip:8080/ping**\
+Simply returns 200, meaning server is accepting requests.
+
+GET **server_ip:8080/help**\
+Returns 200 if API can successfully connect to database.
+
+POST **server_ip:8080/weatherstation/windrain**\
+Used to receive data from the weather station. POST request body must be ***winddir=#&windspeed=#&rainfall=#***. Returns 200 if data was successfully stored in database and 400 if data was not formatted correctly.
+
+<br/><br/>
 
 ## FAQ
-**Why can't I select the "Sparkfun ESP32 Thing" board in Arduino IDE?**
+#### Can't select the "Sparkfun ESP32 Thing" board in Arduino IDE
+You must install the ESP32 core for Arduino [through the Arduino IDE Boards Manager](https://learn.sparkfun.com/tutorials/esp32-thing-hookup-guide#installing-via-arduino-ide-boards-manager)
 
-If you are using the Sparkfun ESP32 Thing, you must install the ESP32 core for Arduino. This can be done in one of two ways:
-1. [Through the Arduino IDE Boards Manager](https://learn.sparkfun.com/tutorials/esp32-thing-hookup-guide#installing-via-arduino-ide-boards-manager)
-2. [Manually](https://learn.sparkfun.com/tutorials/esp32-thing-hookup-guide#installing-the-esp32-arduino-core)
-
-**Why is gibberish being printed in Arduino IDE Serial Monitor?**
-
+#### Gibberish being printed in Arduino IDE Serial Monitor
 Ensure that your Serial Monitor baud rate is the same as the one set under ***Tools/Upload Speed***
+
+#### Can't connect to database in Grafana
+1. Make sure database container is running
+2. Make sure IP Address and port is specified correctly
+3. Make sure database username and password is entered correctly
+4. Make sure database name is ***WeatherStation***
+5. Make sure 'verify-SSL' is set to *never*
+
+#### Docker-compose 'container is already running'
+If a container was previously launched with a different `docker-compose up` command, launching the same container with the new one throws an error.
+- Navigate to directory with initial ***docker-compose.yml*** file and execute `docker-compose down`
+- **(or)** Manually stop the container
+```bash
+docker stop container_name
+docker rm container_name
+```
+
+<br/><br/>
 
 ## Helpful Links
 #### Weather Station
