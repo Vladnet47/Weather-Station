@@ -41,7 +41,6 @@ git clone https://github.com/Vladnet47/Weather-Station.git
 <br/><br/>
 
 ## Setting up Weather Station
-
 ### Prerequisites
 Ensure you have access to the following:
 - [Sparkfun ESP32 Thing](https://www.sparkfun.com/products/13907)
@@ -99,7 +98,6 @@ const String VARNAME_RAINFALL = "rainfall";
 <br/><br/>
 
 ## Setting up Server
-
 ### Installing Docker
 Follow the installation guides below.
 1. [Docker](https://docs.docker.com/install/)
