@@ -4,6 +4,7 @@
 - [Description](#Description)
 - [Downloading the Repository](#Downloading-the-Repository)
 - [Using the Service](#Using-the-Service)
+- [Request Formats](#Request-Formats)
 - [Setting up Weather Station](#Setting-up-Weather-Station)
     - [Prerequisites](#Prerequisites)
     - [Assembling Equipment](#Assembling-Equipment)
@@ -15,7 +16,6 @@
     - [Configuring Grafana](#Configuring-Grafana)
     - [Launching Server](#Launching-Server)
     - [Configuring Docker Containers](#Configuring-Docker-Containers)
-- [Request Formats](#Request-Formats)
 - [FAQ](#FAQ)
 - [Helpful Links](#Helpful-Links)
 
@@ -32,7 +32,7 @@ The server is comprised of four Docker containers:
 - Database management tool, which erases outdated data (>14 days out)
 - [Grafana](https://grafana.com/grafana/), which allows external users to connect and see the data on a timescale graph
 
-<br/><br/>
+<br/>
 
 ## Downloading the Repository
 Navigate to a directory of your choice and execute the following command:
@@ -40,7 +40,7 @@ Navigate to a directory of your choice and execute the following command:
 git clone https://github.com/Vladnet47/Weather-Station.git
 ```
 
-<br/><br/>
+<br/>
 
 ## Using the Service
 Once everything is set up, you access the data and visualization from any computer with a network connection. For information about setting up the weather station and server, see [Setting up Weather Station](#Setting-up-Weather-Station) and [Setting up Server](#Setting-up-Server).
@@ -55,7 +55,21 @@ To view the data visualization, open your browser and type in `server_ip:3000`. 
 - Default username: admin
 - Default password: grafana
 
-<br/><br/>
+<br/>
+
+## Request Formats
+Once the server is running, it exposes three API endpoints.
+
+GET **server_ip:8080/ping**\
+Simply returns 200, meaning server is accepting requests.
+
+GET **server_ip:8080/help**\
+Returns 200 if API can successfully connect to database.
+
+POST **server_ip:8080/weatherstation/windrain**\
+Used to receive data from the weather station. POST request body must be ***winddir=#&windspeed=#&rainfall=#***. Returns 200 if data was successfully stored in database and 400 if data was not formatted correctly.
+
+<br/>
 
 ## Setting up Weather Station
 ### Prerequisites
@@ -112,7 +126,7 @@ const String VARNAME_WIND_SPEED = "windspeed";
 const String VARNAME_RAINFALL = "rainfall";
 ```
 
-<br/><br/>
+<br/>
 
 ## Setting up Server
 ### Installing Docker
@@ -265,20 +279,6 @@ If you change the password or username on the database, make sure to update the 
 
 <br/><br/>
 
-## Request Formats
-Once the server is running, it exposes three API endpoints.
-
-GET **server_ip:8080/ping**\
-Simply returns 200, meaning server is accepting requests.
-
-GET **server_ip:8080/help**\
-Returns 200 if API can successfully connect to database.
-
-POST **server_ip:8080/weatherstation/windrain**\
-Used to receive data from the weather station. POST request body must be ***winddir=#&windspeed=#&rainfall=#***. Returns 200 if data was successfully stored in database and 400 if data was not formatted correctly.
-
-<br/><br/>
-
 ## FAQ
 #### Can't select the "Sparkfun ESP32 Thing" board in Arduino IDE
 You must install the ESP32 core for Arduino [through the Arduino IDE Boards Manager](https://learn.sparkfun.com/tutorials/esp32-thing-hookup-guide#installing-via-arduino-ide-boards-manager)
@@ -302,7 +302,7 @@ docker stop container_name
 docker rm container_name
 ```
 
-<br/><br/>
+<br/>
 
 ## Helpful Links
 #### Weather Station
