@@ -26,12 +26,6 @@ As a way to attract embedded systems enthusiasts, a couple of students and I are
 
 The weather station runs on an ESP32 microcontroller, which reads from attached weather sensors, connects to a wireless network, and sends the data over HTTP to a server running on a Raspberry PI. 
 
-The server is comprised of four Docker containers:
-- API, which parses data from incoming requests
-- [PostgreSQL](https://www.postgresql.org/), a database
-- Database management tool, which erases outdated data (>14 days out)
-- [Grafana](https://grafana.com/grafana/), which allows external users to connect and see the data on a timescale graph
-
 <br/>
 
 ## Downloading the Repository
@@ -228,6 +222,14 @@ docker-compose up -d
 
 ### Configuring Docker Containers
 Docker containers are configured through the *docker-compose.yml* files, which allow the user to pass environment variables to the container. This section describes what environment variables are passed.
+
+The server is comprised of four Docker containers:
+- API, which parses data from incoming requests
+- [PostgreSQL](https://www.postgresql.org/), a database
+- Database management tool, which erases outdated data (>14 days out)
+- [Grafana](https://grafana.com/grafana/), which allows external users to connect and see the data on a timescale graph
+
+<br/>
 
 #### Database
 | Variable | Default Value | Description |
