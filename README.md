@@ -3,6 +3,7 @@
 ## Table of Contents
 - [Description](#Description)
 - [Downloading the Repository](#Downloading-the-Repository)
+- [Using the Service](#Using-the-Service)
 - [Setting up Weather Station](#Setting-up-Weather-Station)
     - [Prerequisites](#Prerequisites)
     - [Assembling Equipment](#Assembling-Equipment)
@@ -31,8 +32,6 @@ The server is comprised of four Docker containers:
 - Database management tool, which erases outdated data (>14 days out)
 - [Grafana](https://grafana.com/grafana/), which allows external users to connect and see the data on a timescale graph
 
-The following sections describe how to set up and configure the system.
-
 <br/><br/>
 
 ## Downloading the Repository
@@ -40,6 +39,21 @@ Navigate to a directory of your choice and execute the following command:
 ```bash 
 git clone https://github.com/Vladnet47/Weather-Station.git
 ```
+
+<br/><br/>
+
+## Using the Service
+Once everything is set up, you access the data and visualization from any computer with a network connection. For information about setting up the weather station and server, see [Setting up Weather Station](#Setting-up-Weather-Station) and [Setting up Server](#Setting-up-Server).
+
+To access and modify the database, use [pgAdmin](https://www.pgadmin.org/download/) (more on this in [Configuring PostreSQL](#Configuring-PostgreSQL)). As long as you know the IP Address of the server, this can be done from any computer.
+- Default port: 5432
+- Default username: postgres
+- Default password: postgres
+
+To view the data visualization, open your browser and type in `server_ip:3000`. This connects to the Grafana process running on the server.
+- Default port: 3000
+- Default username: admin
+- Default password: grafana
 
 <br/><br/>
 
