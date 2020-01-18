@@ -18,36 +18,41 @@ class WeatherStation(Resource):
     def post(self):
         # Make sure that request contains all required attributes
         if not all(key in request.form for key in ('winddir', 'windspeed', 'rainfall')):
-            return "Please specify values for winddir', 'windspeed', and 'rainfall' in POST body query string.", 400 # bad request
+            return "Please specify values for winddir', 'windspeed', and 'rainfall' in POST body (ex. winddir=0.1&windspeed=2.1&rainfall=0.5).", 400 # bad request
 
         windDirection = request.form[os.getenv('PARAM_WIND_DIRECTION', 'winddir')]
         windSpeed = request.form[os.getenv('PARAM_WIND_SPEED', 'windspeed')]
         rainfall = request.form[os.getenv('PARAM_RAINFALL', 'rainfall')]
 
-        insertIntoDatabase(windDirection, windSpeed, rainfall)
+        # Create database connection
+        databaseConnection = connectToDatabase()
+        if databaseConnection is None:
+            return 'Unable to connect to database. Make sure database container is running.', 500 # server error
 
-        return 200 # ok
+        insertIntoDatabase(databaseConnection, windDirection, windSpeed, rainfall)
+
+        return 'Successfully inserted data (winddir = ' + str(windDirection) + ', windspeed = ' + str(windSpeed) + ', rainfall = ' + str(rainfall) + ').', 200 # ok
 
 # Test method to make sure client is able to connect to API
 class Ping(Resource):
     def get(self):
-        return 200 # ok
+        return 'API is running.', 200 # ok
 
 # Test method to make sure api can connect to database
 class Help(Resource):
     def get(self):
         databaseConnection = connectToDatabase()
+        if databaseConnection is None:
+            return 'Unable to connect to database. Make sure database container is running.', 500 # server error
 
         databaseConfigParams = databaseConnection.get_dsn_parameters()
         if databaseConnection is not None:
             databaseConnection.close()
 
-        return databaseConfigParams, 200 # ok
+        return 'Successfully able to connect to database with attributes: ' + str(databaseConfigParams), 200 # ok
 
 # Appends UTC timestamp and inserts specified values into database
-def insertIntoDatabase(windDirection, windSpeed, rainfall):
-    databaseConnection = connectToDatabase()
-
+def insertIntoDatabase(databaseConnection, windDirection, windSpeed, rainfall):
     try:
         # Create cursor and execute data insertion
         cursor = databaseConnection.cursor()
@@ -87,12 +92,12 @@ def connectToDatabase():
     except (Exception, psycopg2.OperationalError) as error:
         print("Failed to connect to database with error:")
         print(error)
-
-    return connection
+    finally:
+        return connection
 
 api.add_resource(WeatherStation, os.getenv('API_ENDPOINT', '/weatherstation/windrain'))
 api.add_resource(Ping, '/ping')
 api.add_resource(Help, '/help')
 
 if __name__ == '__main__':
-    app.run(host=os.getenv('HOST', '0.0.0.0'), port=os.getenv('PORT', '80'))
+    app.run(host=os.getenv('API_HOST', '0.0.0.0'), port=os.getenv('API_PORT', '8080'))
