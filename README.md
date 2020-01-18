@@ -202,25 +202,22 @@ docker-compose up -d
 
 ### Launching Server
 Once PostgreSQL and Grafana are set up, the entire server is ready to be launched.
-1. Build Docker image for API
-```bash
-cd Server/api
-sudo chmod +x build.sh
-./build.sh
-```
-2. Build Docker image for database management tool
-```bash
-cd Server/database_manager
-sudo chmod +x build.sh
-./build.sh
-```
+1. Build docker images for API and database manager.
 3. **(Option 1)** Launch the entire system
 ```bash
 cd Server
+chmod +x build_all.sh
+./build_all.sh
 docker-compose up -d
 ```
-4. **(Option 2)** Launch each container individually, but **launch database first**
+4. **(Option 2)** Launch each container individually, but **launch database first**.
 ```bash
+// Only for API and database manager
+cd Server/container_name
+chmod +x build.sh
+./build.sh
+
+// For all containers
 cd Server/container_name
 docker-compose up -d
 ```
@@ -257,7 +254,9 @@ If you change the password or username on the database, make sure to update the 
 
 | Variable | Default Value | Description |
 | ---- | --------- | ------ |
-| port | 8080:80 | maps 8080 port on server to 80 port on api container |
+} API_HOST | 0.0.0.0 | specifies IP addresses that the API is listening for |
+| API_PORT | 8080 | specifies port of API |
+| port | 8080:8080 | maps 8080 port on server to 8080 port on API container |
 | DATABASE_HOST | database | database container name |
 | DATABASE_NAME | WeatherStation | database table name |
 | DATABASE_USER | postgres | database username |
