@@ -53,8 +53,8 @@ def connectToDatabase():
     except (Exception, psycopg2.OperationalError) as error:
         print("Failed to connect to database with error:")
         print(error)
-
-    return connection
+    finally:
+        return connection
 
 # Deletion job runs every day at specified time
 schedule.every(int(os.getenv('DELETION_FREQUENCY_HOURS', 24))).hours.do(deleteFromDatabase)

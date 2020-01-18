@@ -29,6 +29,8 @@ services:
     image: weatherstation_api:latest
     container_name: api
     environment:
+      API_HOST: '0.0.0.0'
+      API_PORT: 8080
       DATABASE_HOST: database
       DATABASE_NAME: WeatherStation
       DATABASE_USER: postgres
@@ -39,7 +41,7 @@ services:
       PARAM_WIND_SPEED: windspeed
       PARAM_RAINFALL: rainfall
     ports:
-      - "8080:80"
+      - "8080:8080"
     restart: always
     depends_on:
       - database
