@@ -4,6 +4,6 @@
 const char NETWORK[] = "network_name";
 const char PASSWORD[] = "network_password";
 const IPAddress SERVER(27, 0, 0, 1);
-const int PORT = 1234;
+const int PORT = 8080;
 
 #endif
