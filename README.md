@@ -254,7 +254,7 @@ If you change the password or username on the database, make sure to update the 
 
 | Variable | Default Value | Description |
 | ---- | --------- | ------ |
-} API_HOST | 0.0.0.0 | specifies IP addresses that the API is listening for |
+| API_HOST | 0.0.0.0 | specifies IP addresses that the API is listening for |
 | API_PORT | 8080 | specifies port of API |
 | port | 8080:8080 | maps 8080 port on server to 8080 port on API container |
 | DATABASE_HOST | database | database container name |
