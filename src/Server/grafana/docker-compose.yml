@@ -8,8 +8,8 @@ services:
       - "3000:3000"
     restart: always
     networks:
-      - weather_station
+      - database_weather_station
 
 networks:
-  weather_station:
+  database_weather_station:
     external: true

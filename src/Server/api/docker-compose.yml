@@ -18,10 +18,10 @@ services:
       - "8080:80"
     restart: always
     networks:
-      - weather_station
+      - database_weather_station
 
 networks:
-  weather_station:
+  database_weather_station:
     external: true
 
 

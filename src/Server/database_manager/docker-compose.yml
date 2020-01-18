@@ -17,8 +17,8 @@ services:
       TIME_WINDOW_SECONDS: 20
     restart: always
     networks:
-      - weather_station
+      - database_weather_station
 
 networks:
-  weather_station:
+  database_weather_station:
     external: true
