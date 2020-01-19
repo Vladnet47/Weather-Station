@@ -17,17 +17,7 @@
 
 // Initialize the Ethernet client library
 WiFiClient client;
-const unsigned long WIFI_CONNECT_RETRY_DELAY = 1000;
-
-// POST request frequency (ms)
-unsigned long UPDATE_INTERVAL = 10000;
 unsigned long LAST_UPDATE_TIMESTAMP = 0;
-
-// POST request parameters
-const String API_ENDPOINT = "/weatherstation/windrain";
-const String VARNAME_WIND_DIRECTION = "winddir";
-const String VARNAME_WIND_SPEED = "windspeed";
-const String VARNAME_RAINFALL = "rainfall";
 
 
 
