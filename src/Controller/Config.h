@@ -2,10 +2,13 @@
 #define CONFIG_H
 #include <Arduino.h>
 
+// MUST BE MODIFIED
+const char NETWORK[] = "network_name";						
+const char PASSWORD[] = "network_password";
+const IPAddress SERVER(27, 0, 0, 1);
+// END
+
 // Network
-const char NETWORK[] = "network_name";					// MUST BE MODIFIED
-const char PASSWORD[] = "network_password";				// MUST BE MODIFIED
-const IPAddress SERVER(27, 0, 0, 1);					// MUST BE MODIFIED
 const unsigned long WIFI_CONNECT_RETRY_DELAY = 1000;
 const int PORT = 8080;
 
