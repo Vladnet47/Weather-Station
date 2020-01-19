@@ -1,4 +1,4 @@
-version: "3.0"
+version: "3.5"
 
 services:
   manager:
@@ -17,8 +17,8 @@ services:
       TIME_WINDOW_SECONDS: 20
     restart: always
     networks:
-      - database_weather_station
+      - weatherstation
 
 networks:
-  database_weather_station:
+  weatherstation:
     external: true

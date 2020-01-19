@@ -1,4 +1,4 @@
-version: "3.0"
+version: "3.5"
 
 services:
   database:
@@ -10,7 +10,7 @@ services:
       - /var/storage/postgres:/var/lib/postgresql/data
     restart: always
     networks:
-      - weather_station
+      - weatherstation
 
   grafana:
     image: grafana/grafana:latest
@@ -23,7 +23,7 @@ services:
     depends_on:
       - database
     networks:
-      - weather_station
+      - weatherstation
 
   api:
     image: weatherstation_api:latest
@@ -46,7 +46,7 @@ services:
     depends_on:
       - database
     networks:
-      - weather_station
+      - weatherstation
 
   manager:
     image: database_manager:latest
@@ -66,8 +66,9 @@ services:
     depends_on:
       - database
     networks:
-      - weather_station
+      - weatherstation
 
 networks:
-  weather_station:
+  weatherstation:
+    name: weatherstation
     driver: bridge
