@@ -95,35 +95,38 @@ Follow these steps to configure and upload code to the ESP32:
 1. Navigate to ***Weather-Station/Microcontroller/***
 2. Open ***Config.h*** in a text editor
 3. Input your network details, as well as IP and port of server
-```c++
-const char NETWORK[] = "network_name";
+```cpp
+// MUST BE MODIFIED
+const char NETWORK[] = "network_name";						
 const char PASSWORD[] = "network_password";
 const IPAddress SERVER(27, 0, 0, 1);
-const int PORT = 1234;
+// END
 ```
-4. Save and exit
-5. Open ***Controller.ino*** with Arduino IDE
-6. Connect the ESP32 to the computer
-7. Install ESP32 core for Arduino [through the Arduino IDE Boards Manager][esp32_arduino]
-7. Under ***Tools***, select the desired ***Board***, ***Upload Speed*** (115200 recommended), and ***Port***
-8. Upload to board
-
-The ESP32 immediately tries to connect to the specified wireless network. Upon success, the onboard LED blinks three times. Should the network go down, the ESP32 automatically tries to reconnect.
-
-After successfully connecting, the ESP32 continuously reads from the sensors and sends data to the server every 10 seconds. Upon a successful request, the onboard LED blinks two times. 
-
-To change the frequency of requests, open ***Weather-Station/Microcontroller/Controller.ino*** and modify the update interval (in milliseconds).
-```cpp  
-unsigned long UPDATE_INTERVAL = 10000;
-```
-
-You can also change the server API endpoint and parameter names.
+4. You don't have to change the rest, but you can modify the retry-connection delay in case the network goes down, the frequency of POST requests, and the server API endpoint
 ```cpp
+// Network
+const unsigned long WIFI_CONNECT_RETRY_DELAY = 1000;
+const int PORT = 8080;
+
+// POST request frequency (ms)
+const unsigned long UPDATE_INTERVAL = 10000;
+
+// POST request to server API
 const String API_ENDPOINT = "/weatherstation/windrain";
 const String VARNAME_WIND_DIRECTION = "winddir";
 const String VARNAME_WIND_SPEED = "windspeed";
 const String VARNAME_RAINFALL = "rainfall";
 ```
+4. Save and exit
+5. Open ***Controller.ino*** with Arduino IDE
+6. Install ESP32 core for Arduino [through the Arduino IDE Boards Manager][esp32_arduino]
+7. Connect the ESP32 to the computer
+8. Under ***Tools***, select the desired ***Board***, ***Upload Speed*** (115200 recommended), and ***Port***
+9. Upload to board
+
+The ESP32 immediately tries to connect to the specified wireless network. Upon success, the onboard LED blinks three times. Should the network go down, the ESP32 automatically tries to reconnect.
+
+After successfully connecting, the ESP32 continuously reads from the sensors and sends data to the server every 10 seconds. Upon a successful request, the onboard LED blinks two times. 
 
 <br/>
 
