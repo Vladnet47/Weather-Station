@@ -27,7 +27,6 @@ unsigned long LAST_UPDATE_TIMESTAMP = 0;
 // More information can be found here: https://learn.sparkfun.com/tutorials/weather-meter-hookup-guide
 
 // Offset based on orientation of weather station, to make sure degrees = 0 points North
-const float WIND_DIRECTION_OFFSET = 0.0;
 volatile int rainfallTicks = 0;
 volatile unsigned long timeSinceLastWindSpeedTick = 0;
 volatile unsigned long lastWindSpeedTick = 0;

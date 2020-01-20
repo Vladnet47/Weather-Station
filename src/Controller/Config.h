@@ -6,6 +6,7 @@
 const char NETWORK[] = "network_name";						
 const char PASSWORD[] = "network_password";
 const IPAddress SERVER(27, 0, 0, 1);
+const float WIND_DIRECTION_OFFSET = 0.0;
 // END
 
 // Network
