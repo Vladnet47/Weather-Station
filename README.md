@@ -100,10 +100,13 @@ Follow these steps to configure and upload code to the ESP32:
 const char NETWORK[] = "network_name";						
 const char PASSWORD[] = "network_password";
 const IPAddress SERVER(27, 0, 0, 1);
-const float WIND_DIRECTION_OFFSET = 0.0;
 // END
 ```
-4. You don't have to change the rest, but you can modify the retry-connection delay in case the network goes down, the frequency of POST requests, and the server API endpoint
+4. Calculate wind direction offset expirementally using the sensor, so that 0 degrees points North
+```cpp
+const float WIND_DIRECTION_OFFSET = 0.0;
+```
+5. You don't have to change the rest, but you can modify the retry-connection delay in case the network goes down, the frequency of POST requests, and the server API endpoint
 ```cpp
 // Network
 const unsigned long WIFI_CONNECT_RETRY_DELAY = 1000;
@@ -118,12 +121,12 @@ const String VARNAME_WIND_DIRECTION = "winddir";
 const String VARNAME_WIND_SPEED = "windspeed";
 const String VARNAME_RAINFALL = "rainfall";
 ```
-4. Save and exit
-5. Open ***Controller.ino*** with Arduino IDE
-6. Install ESP32 core for Arduino [through the Arduino IDE Boards Manager][esp32_arduino]
-7. Connect the ESP32 to the computer
-8. Under ***Tools***, select the desired ***Board***, ***Upload Speed*** (115200 recommended), and ***Port***
-9. Upload to board
+6. Save and exit
+7. Open ***Controller.ino*** with Arduino IDE
+8. Install ESP32 core for Arduino [through the Arduino IDE Boards Manager][esp32_arduino]
+9. Connect the ESP32 to the computer
+10. Under ***Tools***, select the desired ***Board***, ***Upload Speed*** (115200 recommended), and ***Port***
+11. Upload to board
 
 The ESP32 immediately tries to connect to the specified wireless network. Upon success, the onboard LED blinks three times. Should the network go down, the ESP32 automatically tries to reconnect.
 
