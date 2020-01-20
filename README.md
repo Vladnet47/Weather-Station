@@ -100,6 +100,7 @@ Follow these steps to configure and upload code to the ESP32:
 const char NETWORK[] = "network_name";						
 const char PASSWORD[] = "network_password";
 const IPAddress SERVER(27, 0, 0, 1);
+const float WIND_DIRECTION_OFFSET = 0.0;
 // END
 ```
 4. You don't have to change the rest, but you can modify the retry-connection delay in case the network goes down, the frequency of POST requests, and the server API endpoint
