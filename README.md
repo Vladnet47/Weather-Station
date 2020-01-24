@@ -65,7 +65,7 @@ A successful response status means the API can connect to the database.
 To view the data visualization, open your browser and type in `server_ip:3000`, which connects to the Grafana process running on the server.
 - Default port: 3000
 - Default username: admin
-- Default password: grafana
+- Default password: admin
 
 <br/>
 
