@@ -203,7 +203,7 @@ docker-compose up -d
 ```
 3. Connect to Grafana via port 3000 and use [this tutorial][grafana_tutorial] to create some visualizations.
     *Default username: admin*
-    *Default password: grafana*
+    *Default password: admin*
 
 <br/>
 
